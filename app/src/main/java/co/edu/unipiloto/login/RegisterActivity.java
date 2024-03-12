@@ -94,6 +94,8 @@ public class    RegisterActivity extends AppCompatActivity implements View.OnCli
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
+
+
             if (validarCampos()) {
                 createUser(name,phone,email,password);
                 Intent intent=new Intent(RegisterActivity.this,AuthActivity.class);
