@@ -11,7 +11,7 @@ public class SolicitudActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitud);
     }
-    public void gola(){
+    public void hola(){
 
     }
 }
