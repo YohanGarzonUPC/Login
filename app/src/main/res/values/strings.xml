@@ -11,5 +11,18 @@
     <string name="todo">TODO</string>
     <string name="todo2">TODO</string>
     <string name="noCuenta">¿No tienes cuenta? Regístrate</string>
-
+    <string name="solicitud">Solicitud de Transporte de carga</string>
+    <string name="nombreCom">Nombre Comerciante</string>
+    <string name="detalles">Paga</string>
+    <string name="enviar">enviar</string>
+    <string-array name="tipodetransporte">
+        <item>Solido</item>
+        <item>Agua</item>
+        <item>Gas</item>
+    </string-array>
+    <string-array name="tipodecarga">
+        <item>Camion Grande</item>
+        <item>Camiones Articulados</item>
+        <item>Camiones con Caja</item>
+    </string-array>
 </resources>

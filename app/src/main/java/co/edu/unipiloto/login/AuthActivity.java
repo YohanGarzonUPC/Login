@@ -77,6 +77,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
             String password = passwordEditText.getText().toString().trim();
             if (validarCampos()) {
                 readUser(email,password);
+                Intent intent = new Intent(AuthActivity.this, SolicitudActivity.class);
             }
         } else if (id==R.id.textView2) {
             try {
@@ -99,7 +100,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                     public void onResponse(JSONObject response) {
                         try {
                             if (response.getString("name").equals("")){
-                                Intent intent = new Intent(AuthActivity.this, inicio.class);
+                                Intent intent = new Intent(AuthActivity.this, AuthActivity.class);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
