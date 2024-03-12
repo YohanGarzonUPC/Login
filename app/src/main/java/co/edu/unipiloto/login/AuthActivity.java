@@ -39,6 +39,10 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
 
         accederButton = findViewById(R.id.button2);
 
+        emailEditText = findViewById(R.id.emailEditText);
+
+        passwordEditText = findViewById(R.id.passwordEditText);
+
         textViewRegister = findViewById(R.id.textView2);
 
         accederButton.setOnClickListener(this);
@@ -48,9 +52,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private boolean validarCampos() {
-        emailEditText = findViewById(R.id.emailEditText);
-        passwordEditText = findViewById(R.id.passwordEditText);
-
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
@@ -73,11 +74,12 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         
 
         if (id == R.id.button2){
+
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
             if (validarCampos()) {
                 readUser(email,password);
-                Intent intent = new Intent(AuthActivity.this, SolicitudActivity.class);
+
             }
         } else if (id==R.id.textView2) {
             try {
@@ -90,7 +92,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void readUser(String email, String password) {
-        String URL="http://192.168.0.13/rodo/buscar.php?email="+email+"&password="+password;
+        String URL="http://192.168.56.1/rodo/buscar.php?email="+email+"&password="+password;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 URL,
@@ -98,9 +100,11 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        String hola;
                         try {
-                            if (response.getString("name").equals("")){
-                                Intent intent = new Intent(AuthActivity.this, AuthActivity.class);
+                            hola = response.getString("name");
+                            if (!hola.equals("") || !hola.equals("failed")){
+                                Intent intent = new Intent(AuthActivity.this, SolicitudActivity.class);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
