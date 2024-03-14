@@ -12,4 +12,8 @@ public class SolicitudActivity extends AppCompatActivity {
         setContentView(R.layout.activity_solicitud);
     }
 
+    public void hola(){
+
+    }
+
 }
