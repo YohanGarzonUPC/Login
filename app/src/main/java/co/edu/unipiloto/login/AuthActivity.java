@@ -104,7 +104,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                         try {
                             hola = response.getString("name");
                             if (!hola.equals("") || !hola.equals("failed")){
-                                Intent intent = new Intent(AuthActivity.this, SolicitudActivity.class);
+                                Intent intent = new Intent(AuthActivity.this, NavegacionActivity.class);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
