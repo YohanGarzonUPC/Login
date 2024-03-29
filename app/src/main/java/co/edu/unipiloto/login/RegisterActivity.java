@@ -30,7 +30,7 @@ public class    RegisterActivity extends AppCompatActivity implements View.OnCli
     EditText passwordEditText;
     Button accederButton;
     RequestQueue requestQueue;
-    private static final String URL1="http://192.168.56.1/rodo/usuarios.php";
+    private static final String URL1="http://192.168.0.13/rodo/usuarios.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

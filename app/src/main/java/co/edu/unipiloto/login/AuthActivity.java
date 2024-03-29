@@ -92,7 +92,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void readUser(String email, String password) {
-        String URL="http://192.168.56.1/rodo/buscar.php?email="+email+"&password="+password;
+        String URL="http://192.168.0.13/rodo/buscar.php?email="+email+"&password="+password;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 URL,
@@ -100,12 +100,15 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        String hola;
+                        String usuario;
                         try {
-                            hola = response.getString("name");
-                            if (!hola.equals("") || !hola.equals("failed")){
+                            usuario = response.getString("email");
+                            if (!usuario.equals("") || !usuario.equals("failed")){
                                 Intent intent = new Intent(AuthActivity.this, SolicitudActivity.class);
+                                intent.putExtra("usuario",usuario);
                                 startActivity(intent);
+                            }if (usuario.equals("failed")){
+                                Toast.makeText(AuthActivity.this,"Correo Y/O cotraseña incorrectos", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
