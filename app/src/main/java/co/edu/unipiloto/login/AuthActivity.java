@@ -83,7 +83,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
             }
         } else if (id==R.id.textView2) {
             try {
-                Intent intent = new Intent(AuthActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(AuthActivity.this, Home.class);
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -104,7 +104,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                         try {
                             usuario = response.getString("email");
                             if (!usuario.equals("") || !usuario.equals("failed")){
-                                Intent intent = new Intent(AuthActivity.this, SolicitudActivity.class);
+                                Intent intent = new Intent(AuthActivity.this, Home.class);
                                 intent.putExtra("usuario",usuario);
                                 startActivity(intent);
                             }if (usuario.equals("failed")){
