@@ -3,6 +3,7 @@ package co.edu.unipiloto.login;
 import static co.edu.unipiloto.login.R.id.btnAdd;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicaciones.PublicacionesViewHolder> {
+public class AdapterPublicacionesPerfil extends RecyclerView.Adapter<AdapterPublicacionesPerfil.PublicacionesPerfilViewHolder> {
 
     Context context;
     List<Publicacion> listaPublicaciones;
@@ -24,19 +25,19 @@ public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicacio
     public interface OnConductorButtonClickListener{
         void onConductorButtonClick(int position);
     }
-    public AdapterPublicaciones(Context context, List<Publicacion> listaPublicaciones) {
+    public AdapterPublicacionesPerfil(Context context, List<Publicacion> listaPublicaciones) {
         this.context = context;
         this.listaPublicaciones = listaPublicaciones;
     }
     @NonNull
     @Override
-    public AdapterPublicaciones.PublicacionesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rv_publicaciones,parent,false);
-        return new PublicacionesViewHolder(vista);
+    public AdapterPublicacionesPerfil.PublicacionesPerfilViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_perfil_publicaciones,parent,false);
+        return new PublicacionesPerfilViewHolder(vista);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterPublicaciones.PublicacionesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdapterPublicacionesPerfil.PublicacionesPerfilViewHolder holder, int position) {
         Publicacion publicacion = listaPublicaciones.get(position);
         holder.tvNombre.setText(publicacion.getNombre());
         holder.tvOrigen.setText(publicacion.getOrigen());
@@ -51,10 +52,9 @@ public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicacio
         return listaPublicaciones.size();
     }
 
-    public class PublicacionesViewHolder extends RecyclerView.ViewHolder {
+    public class PublicacionesPerfilViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre, tvOrigen,tvDestino, tvPeso, tvDescripcion, tvFecha;
-        ImageButton btnConductor;
-        public PublicacionesViewHolder(@NonNull View itemView) {
+        public PublicacionesPerfilViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvNombre=itemView.findViewById(R.id.tvNombre);
@@ -63,22 +63,14 @@ public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicacio
             tvPeso = itemView.findViewById(R.id.tvPeso);
             tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
             tvFecha = itemView.findViewById(R.id.tvFecha);
-            btnConductor=itemView.findViewById(btnAdd);
-
-            btnConductor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (conductorButtonClickListener!=null){
-                        int position = getAdapterPosition();
-                        if (position!= RecyclerView.NO_POSITION) {
-                            conductorButtonClickListener.onConductorButtonClick(getAdapterPosition());
-                        }
-                    }
-                }
-            });
         }
     }
-    public void setOnConductorButtonClickListener(OnConductorButtonClickListener listener) {
-        this.conductorButtonClickListener = listener;
+
+    public void updateData(List<Publicacion> newData) {
+        Log.d("Adapter", "Actualizando datos. Nueva cantidad de publicaciones: " + newData.size());
+        this.listaPublicaciones = newData;
+        notifyDataSetChanged();
     }
+
+
 }

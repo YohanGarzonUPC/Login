@@ -3,6 +3,7 @@ package co.edu.unipiloto.login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +22,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SolicitudActivity extends AppCompatActivity implements View.OnClickListener {
@@ -35,12 +42,14 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
     Button accederButton;
     RequestQueue requestQueue;
 
-    private static final String URL1="http://192.168.0.13/rodo/cargas.php";
+    private static final String URL1="http://192.168.56.1/rodo/cargas.php";
     private DrawerLayout drawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitud);
+
+
 
         drawerLayout=findViewById(R.id.drawer_layout_formulario);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -53,12 +62,14 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void InitUI() {
+        UserManager userManager = UserManager.getInstance();
+
         nameEditText= findViewById(R.id.nameEditText);
         origenEditText = findViewById(R.id.originEditText);
         destinoEditText = findViewById(R.id.destinationEditText);
         pesoEditText = findViewById(R.id.weightEditText);
         detallesEditText = findViewById(R.id.descriptionEditText);
-        correo= getIntent().getStringExtra("usuario");
+        correo = userManager.getEmail();
 
         accederButton = findViewById(R.id.submitButton);
     }

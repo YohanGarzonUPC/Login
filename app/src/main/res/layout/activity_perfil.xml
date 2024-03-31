@@ -26,53 +26,137 @@
         app:layout_constraintVertical_bias="0.058"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/textViewDireccion"
-        android:layout_width="275dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="32dp"
-        android:text="Direccion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        <TextView
+            android:id="@+id/textViewDireccion"
+            android:layout_width="241dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="36dp"
+            android:text="Direccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Editar"
-        app:layout_constraintBottom_toTopOf="@+id/textViewDireccion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.775"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.552" />
+        <TextView
+            android:id="@+id/textViewEmail"
+            android:layout_width="241dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="36dp"
+            android:text="Direccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDireccion" />
 
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="140dp"
-        android:layout_height="48dp"
-        android:text="Nombre"
-        app:layout_constraintBottom_toTopOf="@+id/textViewDireccion"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintHorizontal_bias="0.375"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.554" />
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="104dp"
+            android:layout_height="49dp"
+            android:text="EDITAR"
+            android:backgroundTint="#8692f8"
+            app:layout_constraintBottom_toTopOf="@+id/textViewDireccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.821"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.475" />
 
-    <TextView
-        android:id="@+id/textViewPublicaciones"
-        android:layout_width="274dp"
-        android:layout_height="24dp"
-        android:text="Publicaciones"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDireccion"
-        app:layout_constraintVertical_bias="0.057" />
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="140dp"
+            android:layout_height="31dp"
+            android:text="Nombre"
+            app:layout_constraintBottom_toTopOf="@+id/textViewDireccion"
+            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.576"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.39" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textViewType"
+            android:layout_width="140dp"
+            android:layout_height="31dp"
+            android:text="Tipo"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.576"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+        <TextView
+            android:id="@+id/textViewPublicaciones"
+            android:layout_width="333dp"
+            android:layout_height="31dp"
+            android:text="Mis Publicaciones:"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPhone"
+            app:layout_constraintVertical_bias="0.046" />
+
+        <TextView
+            android:id="@+id/textViewPhone"
+            android:layout_width="241dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/telefono"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewPublicaciones"
+            android:layout_width="410dp"
+            android:layout_height="502dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPublicaciones"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="NotSibling" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="12dp"
+            android:text="Email:"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewEmail"
+            app:layout_constraintHorizontal_bias="0.976"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:text="Teléfono:"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textViewPublicaciones"
+            app:layout_constraintEnd_toStartOf="@+id/textViewPhone"
+            app:layout_constraintHorizontal_bias="0.773"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="28dp"
+            android:text="Dirección:"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewDireccion"
+            app:layout_constraintHorizontal_bias="0.759"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3"
+            tools:ignore="MissingConstraints" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

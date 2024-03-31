@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,15 +24,16 @@ import com.android.volley.toolbox.Volley;
 import java.util.HashMap;
 import java.util.Map;
 
-public class    RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     EditText nameEditText;
     EditText phoneEditText;
     EditText emailEditText;
     EditText passwordEditText;
     Button accederButton;
+    RadioGroup roleRadioGroup;
     RequestQueue requestQueue;
-    private static final String URL1="http://192.168.0.13/rodo/usuarios.php";
+    private static final String URL1="http://192.168.56.1/rodo/usuarios.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,20 @@ public class    RegisterActivity extends AppCompatActivity implements View.OnCli
         phoneEditText = findViewById(R.id.phoneEditText);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        roleRadioGroup = findViewById(R.id.roleRadioGroup);
 
         accederButton = findViewById(R.id.registrar);
+    }
+
+    private String getSelectedRole() {
+        int selectedId = roleRadioGroup.getCheckedRadioButtonId();
+        if (selectedId == -1) {
+            Toast.makeText(RegisterActivity.this,"Por favor, selecciona un rol", Toast.LENGTH_SHORT).show();
+            return null;
+        } else {
+            RadioButton selectedRadioButton = findViewById(selectedId);
+            return selectedRadioButton.getText().toString().trim();
+        }
     }
 
     private boolean validarCampos() {
@@ -82,6 +97,8 @@ public class    RegisterActivity extends AppCompatActivity implements View.OnCli
             return false;
         }
 
+        getSelectedRole();
+
         return true;
     }
     @Override
@@ -93,18 +110,20 @@ public class    RegisterActivity extends AppCompatActivity implements View.OnCli
             String phone = phoneEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
+            String type = getSelectedRole();
 
-
-
+            if(type == null) {
+                return;
+            }
             if (validarCampos()) {
-                createUser(name,phone,email,password);
+                createUser(name,phone,email,password,type);
                 Intent intent=new Intent(RegisterActivity.this,AuthActivity.class);
                 startActivity(intent);
             }
         }
     }
 
-    private void createUser(final String name, final String phone,final String email,final String password) {
+    private void createUser(final String name, final String phone,final String email,final String password,final String type) {
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL1,
@@ -128,6 +147,7 @@ public class    RegisterActivity extends AppCompatActivity implements View.OnCli
                 params.put("phone",phone);
                 params.put("email",email);
                 params.put("password",password);
+                params.put("type", type);
                 return params;
             }
         };
