@@ -42,6 +42,8 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitud);
 
+
+
         drawerLayout=findViewById(R.id.drawer_layout_formulario);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);

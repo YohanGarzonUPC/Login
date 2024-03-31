@@ -1,25 +1,32 @@
 package co.edu.unipiloto.login;
 
+import static co.edu.unipiloto.login.R.id.btnAdd;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicaciones.PublicacionesViewHolder> {
 
     Context context;
-    List<String> listaPublicaciones = new ArrayList<>();
+    List<Publicacion> listaPublicaciones;
 
-    public AdapterPublicaciones(Context context, List<String> listaUsuarios) {
+    private OnConductorButtonClickListener conductorButtonClickListener;
+    public interface OnConductorButtonClickListener{
+        void onConductorButtonClick(int position);
+    }
+    public AdapterPublicaciones(Context context, List<Publicacion> listaPublicaciones) {
         this.context = context;
-        this.listaPublicaciones = listaUsuarios;
+        this.listaPublicaciones = listaPublicaciones;
     }
     @NonNull
     @Override
@@ -30,7 +37,13 @@ public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicacio
 
     @Override
     public void onBindViewHolder(@NonNull AdapterPublicaciones.PublicacionesViewHolder holder, int position) {
-        holder.tvNombre.setText(listaPublicaciones.get(position));
+        Publicacion publicacion = listaPublicaciones.get(position);
+        holder.tvNombre.setText(publicacion.getNombre());
+        holder.tvOrigen.setText(publicacion.getOrigen());
+        holder.tvDestino.setText(publicacion.getDestino());
+        holder.tvPeso.setText(publicacion.getPeso());
+        holder.tvDescripcion.setText(publicacion.getDescripcion());
+        holder.tvFecha.setText(publicacion.getFecha());
     }
 
     @Override
@@ -39,11 +52,33 @@ public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicacio
     }
 
     public class PublicacionesViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNombre;
+        TextView tvNombre, tvOrigen,tvDestino, tvPeso, tvDescripcion, tvFecha;
+        ImageButton btnConductor;
         public PublicacionesViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvNombre=itemView.findViewById(R.id.tvNombre);
+            tvOrigen = itemView.findViewById(R.id.tvOrigen);
+            tvDestino= itemView.findViewById(R.id.tvDestino);
+            tvPeso = itemView.findViewById(R.id.tvPeso);
+            tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
+            tvFecha = itemView.findViewById(R.id.tvFecha);
+            btnConductor=itemView.findViewById(btnAdd);
+
+            btnConductor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (conductorButtonClickListener!=null){
+                        int position = getAdapterPosition();
+                        if (position!= RecyclerView.NO_POSITION) {
+                            conductorButtonClickListener.onConductorButtonClick(getAdapterPosition());
+                        }
+                    }
+                }
+            });
         }
+    }
+    public void setOnConductorButtonClickListener(OnConductorButtonClickListener listener) {
+        this.conductorButtonClickListener = listener;
     }
 }
