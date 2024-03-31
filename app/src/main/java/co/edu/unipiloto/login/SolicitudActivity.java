@@ -1,9 +1,12 @@
 package co.edu.unipiloto.login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,11 +36,15 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
     RequestQueue requestQueue;
 
     private static final String URL1="http://192.168.0.13/rodo/cargas.php";
-
+    private DrawerLayout drawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitud);
+
+        drawerLayout=findViewById(R.id.drawer_layout_formulario);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
         
         requestQueue = Volley.newRequestQueue(this);
 
@@ -53,6 +61,26 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
         correo= getIntent().getStringExtra("usuario");
 
         accederButton = findViewById(R.id.submitButton);
+    }
+
+    private boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int itemId=item.getItemId();
+        switch (itemId){
+            case R.id.nav_Home:
+                startActivity(new Intent(this, Home.class));
+                return true;
+            case R.id.nav_Favoritos:
+                startActivity(new Intent(this, FavoritosActivity.class));
+                return true;
+            case R.id.nav_formulario:
+                startActivity(new Intent(this,SolicitudActivity.class));
+                return true;
+            case R.id.nav_perfil:
+                startActivity(new Intent(this, PerfilActivity.class));
+                return true;
+            default:
+                return false;
+        }
     }
 
     private boolean validarCampos() {
