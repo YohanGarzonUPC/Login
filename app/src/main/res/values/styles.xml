@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="NavigationViewStyle" parent="Widget.Design.NavigationView">
+        <item name="android:textSize">100sp</item>
+    </style>
+
+</resources>

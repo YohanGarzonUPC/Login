@@ -31,8 +31,8 @@
 
         <TextView
             android:id="@+id/tvNombre"
-            android:layout_width="298dp"
-            android:layout_height="353dp"
+            android:layout_width="297dp"
+            android:layout_height="30dp"
             android:gravity="center"
             android:hint="Nombre"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,6 +41,74 @@
             app:layout_constraintStart_toEndOf="@+id/ivCredencial"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tvOrigen"
+            android:layout_width="298dp"
+            android:layout_height="19dp"
+            android:hint="Origen"
+            app:layout_constraintBottom_toTopOf="@+id/tvPeso"
+            app:layout_constraintStart_toStartOf="@+id/tvNombre"
+            app:layout_constraintTop_toBottomOf="@+id/tvNombre"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tvDestino"
+            android:layout_width="297dp"
+            android:layout_height="22dp"
+            android:hint="Destino"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvNombre"
+            app:layout_constraintTop_toBottomOf="@+id/tvOrigen"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <!-- TextView para el peso -->
+        <TextView
+            android:id="@+id/tvPeso"
+            android:layout_width="299dp"
+            android:layout_height="18dp"
+            android:hint="Peso"
+            app:layout_constraintBottom_toTopOf="@+id/tvDescripcion"
+            app:layout_constraintStart_toStartOf="@+id/tvNombre"
+            app:layout_constraintTop_toBottomOf="@+id/tvDestino"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <!-- TextView para la descripción -->
+        <TextView
+            android:id="@+id/tvDescripcion"
+            android:layout_width="297dp"
+            android:layout_height="51dp"
+            android:hint="Descripción"
+            app:layout_constraintBottom_toTopOf="@+id/tvFecha"
+            app:layout_constraintStart_toStartOf="@+id/tvNombre"
+            app:layout_constraintTop_toBottomOf="@+id/tvPeso"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <!-- TextView para la fecha -->
+
+        <TextView
+            android:id="@+id/tvFecha"
+            android:layout_width="163dp"
+            android:layout_height="23dp"
+            android:hint="Fecha"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvNombre"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescripcion"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageButton
+            android:id="@+id/btnAdd"
+            android:layout_width="63dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/shadow"
+            android:backgroundTint="#ECEEFD"
+            android:src="@drawable/baseline_favorite_24"
+            app:layout_constraintBottom_toBottomOf="@+id/tvFecha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvFecha"
+            app:layout_constraintVertical_bias="0.0" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
