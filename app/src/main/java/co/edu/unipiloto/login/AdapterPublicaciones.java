@@ -65,13 +65,18 @@ public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicacio
             tvFecha = itemView.findViewById(R.id.tvFecha);
             btnConductor=itemView.findViewById(btnAdd);
 
+
+
+
             btnConductor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (conductorButtonClickListener!=null){
                         int position = getAdapterPosition();
                         if (position!= RecyclerView.NO_POSITION) {
+
                             conductorButtonClickListener.onConductorButtonClick(getAdapterPosition());
+
                         }
                     }
                 }
