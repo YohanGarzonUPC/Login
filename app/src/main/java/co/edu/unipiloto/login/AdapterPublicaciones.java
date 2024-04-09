@@ -25,7 +25,7 @@ public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicacio
     List<Publicacion> listaPublicaciones;
     Publicacion publicacionSeleccionada;
     OnConductorButtonClickListener conductorButtonClickListener;
-
+    String hola;
     public interface OnConductorButtonClickListener {
         void onConductorButtonClick(Publicacion publicacion);
     }
