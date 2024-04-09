@@ -1,7 +1,6 @@
 package co.edu.unipiloto.login;
 
 
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;

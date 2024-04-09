@@ -85,6 +85,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <!-- TextView para la fecha -->
+
         <TextView
             android:id="@+id/tvFecha"
             android:layout_width="163dp"
@@ -97,14 +98,16 @@
 
         <ImageButton
             android:id="@+id/btnAdd"
-            android:layout_width="57dp"
-            android:layout_height="21dp"
-            android:onClick="Onfavoritos"
+            android:layout_width="63dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/shadow"
+            android:backgroundTint="#ECEEFD"
+            android:src="@drawable/baseline_favorite_24"
             app:layout_constraintBottom_toBottomOf="@+id/tvFecha"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvFecha"
-            android:src="@drawable/baseline_favorite_24"/>
-
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
