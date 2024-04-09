@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -50,6 +51,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
     static RequestQueue requestQueue;
     private AdapterPublicaciones adapter;
     private static List<Publicacion> listaPublicaciones = new ArrayList<>();
+    private static List<String> listaIds = new ArrayList<>();
     private String correo;
 
     @Override
@@ -92,7 +94,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
     }
 
     private void obtenerPublicaciones() {
-        String URL = "http://192.168.56.1/rodo/traerPublicaciones.php";
+        String URL = "http://192.168.0.15/rodo/traerPublicaciones.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL,
@@ -114,7 +116,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
                                 publicacion.setIdPublicacion(userObject.getInt("id"));
                                 listaPublicaciones.add(publicacion);
                             }
-                            actualizarListaPublicaciones();
+                            ActualizarHome();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -146,7 +148,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
     }
 
     private void agregarConductor(Publicacion publicacion) {
-        String URL = "http://192.168.56.1/rodo/cargasconductores.php";
+        String URL = "http://192.168.0.15/rodo/actualizarConductor.php";
         int idPublicacion = publicacion.getIdPublicacion();
         String email=userManager.getEmail();
         enviar(String.valueOf(idPublicacion), email, URL);
@@ -198,5 +200,44 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
             default:
                 return false;
         }
+    }
+    private void ActualizarHome() {
+        String URL = "http://192.168.0.15/rodo/actualizarHome.php";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                URL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            listaIds.clear();
+                            for (int i=0; i<response.length(); i++) {
+                                JSONObject userObject = response.getJSONObject(i);
+                                listaIds.add(userObject.getString("idPublicacion"));
+                            }
+                            for (int i=0;i<listaPublicaciones.size();i++){
+                                for (int j=0;j<listaIds.size();j++){
+                                    String idPublicacionActual =""+ listaPublicaciones.get(i).getIdPublicacion();
+                                    String idPubliAceptada = listaIds.get(j);
+                                if (idPublicacionActual.equals(idPubliAceptada)) {
+                                    listaPublicaciones.remove(listaPublicaciones.get(i));
+                                }
+                                }
+                            }
+                            actualizarListaPublicaciones();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        );
+        requestQueue.add(jsonArrayRequest);
     }
 }
