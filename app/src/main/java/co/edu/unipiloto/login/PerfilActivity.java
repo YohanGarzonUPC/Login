@@ -14,6 +14,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,11 +54,15 @@ public class PerfilActivity extends AppCompatActivity {
         List<Publicacion> publicaciones = userManager.getPublications();
         String name = userManager.getName();
         String phone = userManager.getPhone();
+        String direccion = userManager.getDireccion();
         String email = userManager.getEmail();
         String type = userManager.getType();
 
         TextView textViewName = findViewById(R.id.textViewName);
         textViewName.setText(name);
+
+        TextView textViewDireccion = findViewById(R.id.textViewDireccion);
+        textViewDireccion.setText(direccion);
 
         TextView textViewPhone = findViewById(R.id.textViewPhone);
         textViewPhone.setText(phone);
@@ -71,6 +78,19 @@ public class PerfilActivity extends AppCompatActivity {
         recyclerViewPublicaciones.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewPublicaciones.setAdapter(adapterPublicacionesPerfil);
 
+        ImageView imageView = findViewById(R.id.imageView3);
+
+        String imagenUrl = userManager.getImagen_url();
+
+        new LoadImageFromUrlTask(imageView).execute(imagenUrl);
+
+        Button buttonEditar = findViewById(R.id.button3);
+        buttonEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PerfilActivity.this, EdicionPerfil.class));
+            }
+        });
 
     }
 

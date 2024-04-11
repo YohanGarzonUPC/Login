@@ -8,8 +8,11 @@ public class UserManager {
 
     private String name;
     private String phone;
+    private String direccion;
     private String email;
     private String type;
+    private String imagen_url;
+
     private List<Publicacion> publications;
 
     private UserManager() {
@@ -39,6 +42,14 @@ public class UserManager {
         this.phone = phone;
     }
 
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -53,6 +64,14 @@ public class UserManager {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getImagen_url() {
+        return imagen_url;
+    }
+
+    public void setImagen_url(String imagen_url) {
+        this.imagen_url = imagen_url;
     }
 
     public List<Publicacion> getPublications() {

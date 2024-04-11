@@ -145,9 +145,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 Map<String, String> params = new HashMap<>();
                 params.put("name",name);
                 params.put("phone",phone);
+                params.put("direccion","Dirección");
                 params.put("email",email);
                 params.put("password",password);
                 params.put("type", type);
+                params.put("imagen_url", "http://192.168.56.1/rodo/uploads/default_image.png");
                 return params;
             }
         };

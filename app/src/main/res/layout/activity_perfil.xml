@@ -14,17 +14,17 @@
     android:layout_height="match_parent"
     tools:context=".PerfilActivity">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.118"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.058"
-        tools:srcCompat="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="77dp"
+            android:layout_height="75dp"
+            android:src="@drawable/default_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.119"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.044" />
 
         <TextView
             android:id="@+id/textViewDireccion"
@@ -49,35 +49,36 @@
             android:id="@+id/button3"
             android:layout_width="104dp"
             android:layout_height="49dp"
-            android:text="EDITAR"
             android:backgroundTint="#8692f8"
+            android:text="EDITAR"
             app:layout_constraintBottom_toTopOf="@+id/textViewDireccion"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.821"
+            app:layout_constraintHorizontal_bias="0.915"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.475" />
+            app:layout_constraintVertical_bias="0.608" />
 
         <TextView
             android:id="@+id/textViewName"
             android:layout_width="140dp"
             android:layout_height="31dp"
             android:text="Nombre"
+            android:gravity="start|bottom"
             app:layout_constraintBottom_toTopOf="@+id/textViewDireccion"
             app:layout_constraintEnd_toStartOf="@+id/button3"
-            app:layout_constraintHorizontal_bias="0.576"
+            app:layout_constraintHorizontal_bias="0.529"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.39" />
+            app:layout_constraintVertical_bias="0.345" />
 
         <TextView
             android:id="@+id/textViewType"
             android:layout_width="140dp"
             android:layout_height="31dp"
+            android:layout_marginTop="4dp"
             android:text="Tipo"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/button3"
-            app:layout_constraintHorizontal_bias="0.576"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 

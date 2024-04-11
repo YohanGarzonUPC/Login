@@ -116,14 +116,18 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                 if (userData != null) {
                                     String name = userData.optString("name", "N/A");
                                     String phone = userData.optString("phone", "N/A");
+                                    String direccion = userData.optString("direccion", "N/A");
                                     String emailRes = userData.optString("email", "N/A");
                                     String type = userData.optString("type", "N/A");
+                                    String imagen_url = userData.optString("imagen_url", "N/A");
 
                                     UserManager userManager = UserManager.getInstance();
                                     userManager.setName(name);
                                     userManager.setPhone(phone);
+                                    userManager.setDireccion(direccion);
                                     userManager.setEmail(emailRes);
                                     userManager.setType(type);
+                                    userManager.setImagen_url(imagen_url);
 
                                     if (userData.has("publicaciones")) {
                                         JSONArray publicacionesArray = userData.getJSONArray("publicaciones");
