@@ -48,7 +48,8 @@ public class FavoritosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
     /*    drawerLayout=findViewById(R.id.drawer_layout_favoritos);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
@@ -77,6 +78,26 @@ public class FavoritosActivity extends AppCompatActivity {
        recyclerView.setAdapter(adapter);
        */
 
+    }
+
+    private boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int itemId=item.getItemId();
+        switch (itemId){
+            case R.id.nav_Home:
+                startActivity(new Intent(this, Home.class));
+                return true;
+            case R.id.nav_Favoritos:
+                startActivity(new Intent(this, FavoritosActivity.class));
+                return true;
+            case R.id.nav_formulario:
+                startActivity(new Intent(this,SolicitudActivity.class));
+                return true;
+            case R.id.nav_perfil:
+                startActivity(new Intent(this, PerfilActivity.class));
+                return true;
+            default:
+                return false;
+        }
     }
 
     // Método para obtener las publicaciones favoritas (implementa según tus necesidades)

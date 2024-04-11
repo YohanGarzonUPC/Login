@@ -11,8 +11,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -35,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kotlin.jvm.internal.markers.KMutableList;
+
 public class Home extends AppCompatActivity implements AdapterPublicaciones.OnConductorButtonClickListener {
 
     private DrawerLayout drawerLayout;
@@ -42,18 +46,18 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
     RecyclerView recyclerView;
     ProgressBar progressBar;
     static int contador = 0;
+
+    UserManager userManager;
     static RequestQueue requestQueue;
     private AdapterPublicaciones adapter;
     private static List<Publicacion> listaPublicaciones = new ArrayList<>();
-    String correo;
-    boolean deslizo = false;
+    private static List<String> listaIds = new ArrayList<>();
+    private String correo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        correo =getIntent().getStringExtra("usuario");
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -64,39 +68,118 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
         nestedScrollView = findViewById(R.id.nsvVista);
         recyclerView = findViewById(R.id.rvUsuarios);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        progressBar = findViewById(R.id.pbCargando);
 
-        ObtenerPublicacion(recyclerView,Home.this);
-        //  if(deslizo){
+        progressBar = findViewById(R.id.pbCargando);
+        userManager = UserManager.getInstance();
+        obtenerPublicaciones();
+
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-
             public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                     contador++;
                     progressBar.setVisibility(View.VISIBLE);
-                    deslizo = true;
+
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if (contador < 10) {
-
-                                ObtenerPublicacion(recyclerView,Home.this);
+                                obtenerPublicaciones();
                             }
                         }
                     }, 3000);
                 }
             }
         });
-        // }
-
-        adapter = new AdapterPublicaciones(this,listaPublicaciones);
-        adapter.setOnConductorButtonClickListener(this);
-        recyclerView.setAdapter(adapter);
     }
 
-    public static void ObtenerPublicacion(RecyclerView recyclerView, Context context) {
-        readUser(recyclerView, context);
+    private void obtenerPublicaciones() {
+        String URL = "http://192.168.0.15/rodo/traerPublicaciones.php";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                URL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            listaPublicaciones.clear();
+                            for (int i=0; i<response.length(); i++) {
+                                JSONObject userObject = response.getJSONObject(i);
+                                Publicacion publicacion = new Publicacion();
+                                publicacion.setNombre("producto: " + userObject.getString("name"));
+                                publicacion.setOrigen("Origen: " + userObject.getString("origen"));
+                                publicacion.setDestino("Destino: " + userObject.getString("destino"));
+                                publicacion.setPeso("Peso: " + userObject.getInt("peso"));
+                                publicacion.setDescripcion("Descripcion: " + userObject.getString("detalles"));
+                                publicacion.setFecha(userObject.getString("fecha"));
+                                publicacion.setIdPublicacion(userObject.getInt("id"));
+                                listaPublicaciones.add(publicacion);
+                            }
+                            ActualizarHome();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        );
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private void actualizarListaPublicaciones() {
+        if (adapter == null) {
+            adapter = new AdapterPublicaciones(this, listaPublicaciones, null);
+            adapter.setOnConductorButtonClickListener(this);
+            recyclerView.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onConductorButtonClick(Publicacion publicacion) {
+        agregarConductor(publicacion);
+    }
+
+    private void agregarConductor(Publicacion publicacion) {
+        String URL = "http://192.168.0.15/rodo/actualizarConductor.php";
+        int idPublicacion = publicacion.getIdPublicacion();
+        String email=userManager.getEmail();
+        enviar(String.valueOf(idPublicacion), email, URL);
+    }
+
+    private void enviar(final String idPublicacion, final String email, final String URL1) {
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                URL1,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(Home.this, "Correcto", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Home.this, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("idPublicacion", idPublicacion);
+                params.put("correo", email);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     private boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -118,9 +201,8 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
                 return false;
         }
     }
-
-    private static void readUser(RecyclerView recyclerView, Context context) {
-        String URL = "http://192.168.56.1/rodo/traerPublicaciones.php";
+    private void ActualizarHome() {
+        String URL = "http://192.168.0.15/rodo/actualizarHome.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL,
@@ -129,43 +211,33 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            listaPublicaciones.clear();
-                            for (int i=0;i<response.length();i++) {
+                            listaIds.clear();
+                            for (int i=0; i<response.length(); i++) {
                                 JSONObject userObject = response.getJSONObject(i);
-                                Publicacion publicacion = new Publicacion();
-                                publicacion.setNombre("producto: "+userObject.getString("name"));
-                                publicacion.setOrigen("Origen: "+userObject.getString("origen"));
-                                publicacion.setDestino("Destino: "+userObject.getString("destino"));
-                                publicacion.setPeso("Peso: "+userObject.getInt("peso"));
-                                publicacion.setDescripcion("Descripcion: "+userObject.getString("detalles"));
-                                publicacion.setFecha(userObject.getString("fecha"));
-                                publicacion.setIdPublicacion(userObject.getInt("id"));
-                                listaPublicaciones.add(publicacion);
+                                listaIds.add(userObject.getString("idPublicacion"));
                             }
-                            recyclerView.setAdapter(new AdapterPublicaciones(context,listaPublicaciones));
+                            for (int i=0;i<listaPublicaciones.size();i++){
+                                for (int j=0;j<listaIds.size();j++){
+                                    String idPublicacionActual =""+ listaPublicaciones.get(i).getIdPublicacion();
+                                    String idPubliAceptada = listaIds.get(j);
+                                if (idPublicacionActual.equals(idPubliAceptada)) {
+                                    listaPublicaciones.remove(listaPublicaciones.get(i));
+                                }
+                                }
+                            }
+                            actualizarListaPublicaciones();
                         } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                            e.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        error.printStackTrace();
                     }
                 }
         );
         requestQueue.add(jsonArrayRequest);
-    }
-
-    @Override
-    public void onConductorButtonClick(int position) {
-        Publicacion publicacion= listaPublicaciones.get(position);
-
-        agregarConductor(publicacion);
-    }
-
-    private void agregarConductor(Publicacion publicacion) {
-
     }
 }

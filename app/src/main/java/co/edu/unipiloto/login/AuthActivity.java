@@ -44,6 +44,8 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+
         requestQueue = Volley.newRequestQueue(this);
 
         accederButton = findViewById(R.id.button2);
@@ -63,7 +65,8 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     private boolean validarCampos() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
-
+        Intent intent = new Intent();
+        intent.putExtra("correo",email);
         if (email.isEmpty()) {
             emailEditText.setError("Ingrese su correo electrónico");
             return false;
@@ -101,7 +104,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void readUser(final String email, final String password) {
-        String URL = "http://192.168.56.1/rodo/buscar.php";
+        String URL = "http://192.168.0.15/rodo/buscar.php";
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL,
