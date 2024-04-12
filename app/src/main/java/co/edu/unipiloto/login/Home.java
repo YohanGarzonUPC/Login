@@ -94,7 +94,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
     }
 
     private void obtenerPublicaciones() {
-        String URL = "http://192.168.0.15/rodo/traerPublicaciones.php";
+        String URL = "http://192.168.56.1/rodo/traerPublicaciones.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL,
@@ -148,7 +148,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
     }
 
     private void agregarConductor(Publicacion publicacion) {
-        String URL = "http://192.168.0.15/rodo/actualizarConductor.php";
+        String URL = "http://192.168.56.1/rodo/actualizarConductor.php";
         int idPublicacion = publicacion.getIdPublicacion();
         String email=userManager.getEmail();
         enviar(String.valueOf(idPublicacion), email, URL);
@@ -202,7 +202,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
         }
     }
     private void ActualizarHome() {
-        String URL = "http://192.168.0.15/rodo/actualizarHome.php";
+        String URL = "http://192.168.56.1/rodo/actualizarHome.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL,

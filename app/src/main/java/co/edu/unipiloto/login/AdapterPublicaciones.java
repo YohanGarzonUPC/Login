@@ -89,7 +89,6 @@ public class AdapterPublicaciones extends RecyclerView.Adapter<AdapterPublicacio
             tvDescripcion.setText(publicacion.getDescripcion());
             tvFecha.setText(publicacion.getFecha());
 
-            // Configurar el clic en el botón conductor
             btnConductor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
