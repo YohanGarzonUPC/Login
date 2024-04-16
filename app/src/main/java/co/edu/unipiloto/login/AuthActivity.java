@@ -104,7 +104,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void readUser(final String email, final String password) {
-        String URL = "http://192.168.56.1/rodo/buscar.php";
+        String URL = "http://192.168.0.15/rodo/buscar.php";
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL,
