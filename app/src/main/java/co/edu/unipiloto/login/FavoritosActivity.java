@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
@@ -39,44 +41,47 @@ import java.util.List;
 import java.util.Map;
 
 public class FavoritosActivity extends AppCompatActivity {
+
+
     private DrawerLayout drawerLayout;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewFav;
     private AdapterPublicacionesFavoritos adapter;
-    private List<Publicacion> listaPublicacionesFavoritas;
+    private List<Publicacion> listaPublicacionesFavoritas=new ArrayList<>();
+    static RequestQueue requestQueue;
+    private List<String> listid = new ArrayList<>();
+
+    private UserManager userManager= UserManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_perfil);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
-    /*    drawerLayout=findViewById(R.id.drawer_layout_favoritos);
+        setContentView(R.layout.activity_favoritos);
+        requestQueue = Volley.newRequestQueue(this);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 
-        UserManager userManager = UserManager.getInstance();
+
         List<Publicacion> publicaciones = userManager.getPublications();
         String name = userManager.getName();
         String phone = userManager.getPhone();
         String email = userManager.getEmail();
         String type = userManager.getType();
 
-        TextView textViewName = findViewById(R.id.textViewName);
+        TextView textViewName = findViewById(R.id.nombrefavoritos);
         textViewName.setText(name);
 
-        TextView textViewPhone = findViewById(R.id.textViewPhone);
+        TextView textViewPhone = findViewById(R.id.textViewPhoneF);
         textViewPhone.setText(phone);
 
-        TextView textViewEmail = findViewById(R.id.textViewEmail);
+        TextView textViewEmail = findViewById(R.id.textViewEmailF);
         textViewEmail.setText(email);
 
-        TextView textViewType = findViewById(R.id.textViewType);
+        TextView textViewType = findViewById(R.id.textViewTypeF);
         textViewType.setText(type);
-        recyclerView = findViewById(R.id.recycler_view_favoritos);
+        recyclerViewFav = findViewById(R.id.recyclerViewFavoritos);
         adapter = new AdapterPublicacionesFavoritos(this, publicaciones);
-        adapter.setLayoutManager(new LinearLayoutManager(this));
-       recyclerView.setAdapter(adapter);
-       */
+        recyclerViewFav.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewFav.setAdapter(adapter);
 
     }
 
@@ -102,37 +107,65 @@ public class FavoritosActivity extends AppCompatActivity {
 
     // Método para obtener las publicaciones favoritas (implementa según tus necesidades)
 
- /*   private boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int itemId=item.getItemId();
-        switch (itemId){
-            case R.id.nav_Home:
-                startActivity(new Intent(this, Home.class));
-                return true;
-            case R.id.nav_Favoritos:
-                startActivity(new Intent(this, FavoritosActivity.class));
-                return true;
-            case R.id.nav_formulario:
-                startActivity(new Intent(this,SolicitudActivity.class));
-                return true;
-            case R.id.nav_perfil:
-                startActivity(new Intent(this, PerfilActivity.class));
-                return true;
-            default:
-                return false;
-        }
-    }
+
 
     @Override
     protected void onResume() {
+        String correo = userManager.getEmail();
         super.onResume();
-        obtenerPublicaciones();
+        obteneridPublicaciones(correo);
+
+
     }
 
-   private void obtenerPublicaciones() {
+
+
+    private void obteneridPublicaciones(String correo) {
+
+        String URL = "http://192.168.56.1/rodo/getidEmail.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONObject(response).getJSONArray("data");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject userObject = jsonArray.getJSONObject(i);
+                                listid.add(userObject.getString("idPublicacion"));
+                            }
+                            for (String id : listid) {
+                                Log.d("ID", id);
+                                obtenerPublicaciones(id);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("correo", correo); // Asegúrate de cambiar esto por el correo actual que necesitas enviar
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+
+
+
+    private void obtenerPublicaciones(String id) {
         UserManager userManager = UserManager.getInstance();
         String email = userManager.getEmail();
 
-        String url = "http://192.168.56.1/rodo/getPublicacionesEmail.php";
+        String url = "http://192.168.56.1/rodo/getPublicacionesId.php";
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -145,7 +178,6 @@ public class FavoritosActivity extends AppCompatActivity {
                             String status = jsonResponse.optString("status");
                             if ("success".equals(status)) {
                                 JSONArray publicacionesArray = jsonResponse.getJSONArray("data");
-                                List<Publicacion> publicationList = new ArrayList<>();
                                 for (int i = 0; i < publicacionesArray.length(); i++) {
                                     JSONObject publicationJson = publicacionesArray.getJSONObject(i);
                                     Publicacion publicacion = new Publicacion(
@@ -157,12 +189,13 @@ public class FavoritosActivity extends AppCompatActivity {
                                             publicationJson.optString("fecha"),
                                             publicationJson.optInt("idPublicacion")
                                     );
-                                    publicationList.add(publicacion);
+                                    listaPublicacionesFavoritas.add(publicacion);
                                 }
                                 // Aquí actualizas el adaptador de tu RecyclerView
                                 runOnUiThread(() -> {
-                                   adapter.updateData(publicationList);
+                                    adapter.updateData(listaPublicacionesFavoritas);
                                 });
+
                             } else {
                                 String errorMessage = jsonResponse.optString("message", "Error desconocido");
                                 Toast.makeText(FavoritosActivity.this, errorMessage, Toast.LENGTH_LONG).show();
@@ -181,11 +214,12 @@ public class FavoritosActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("email", email);
+                params.put("id", id);
                 return params;
             }
         };
 
         requestQueue.add(stringRequest);
-   */ }
-//}
+    }
+
+}

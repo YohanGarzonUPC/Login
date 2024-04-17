@@ -1,6 +1,7 @@
 package co.edu.unipiloto.login;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.util.List;
 public class AdapterPublicacionesFavoritos extends RecyclerView.Adapter<AdapterPublicacionesFavoritos.PublicacionesViewHolder> {
 
     private final Context context;
-    private final List<Publicacion> listaPublicacionesFavoritas;
+    private List<Publicacion> listaPublicacionesFavoritas;
 
     // Constructor
     public AdapterPublicacionesFavoritos(Context context, List<Publicacion> listaPublicacionesFavoritas) {
@@ -51,7 +52,6 @@ public class AdapterPublicacionesFavoritos extends RecyclerView.Adapter<AdapterP
 
         public PublicacionesViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvNombre = itemView.findViewById(R.id.tvNombre);
             tvOrigen = itemView.findViewById(R.id.tvOrigen);
             tvDestino = itemView.findViewById(R.id.tvDestino);
@@ -61,6 +61,11 @@ public class AdapterPublicacionesFavoritos extends RecyclerView.Adapter<AdapterP
         }
     }
 
+    public void updateData(List<Publicacion> newData) {
+        Log.d("Adapter", "Actualizando datos. Nueva cantidad de publicaciones: " + newData.size());
+        this.listaPublicacionesFavoritas = newData;
+        notifyDataSetChanged();
+    }
 
 }
 

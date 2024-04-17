@@ -10,32 +10,118 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".FavoritosActivity">
+        android:layout_height="match_parent">
 
-        <!-- Tus vistas para la actividad de favoritos aquí -->
-
-        <!-- Por ejemplo, podrías tener un RecyclerView para mostrar los favoritos -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_favoritos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.023"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textViewDireccion"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="36dp"
+            android:text="Direccion: "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+        <TextView
+            android:id="@+id/textViewEmailF"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="36dp"
+            android:text="email: "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDireccion" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="104dp"
+            android:layout_height="49dp"
+            android:text="Editar"
+            android:backgroundTint="#8692f8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.95" />
+
+        <TextView
+            android:id="@+id/nombrefavoritos"
+            android:layout_width="106dp"
+            android:layout_height="31dp"
+            android:text="@string/nombre"
+            app:layout_constraintBottom_toBottomOf="@+id/button3"
+            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.136"
+            app:layout_constraintStart_toEndOf="@id/imageView3"
+            app:layout_constraintTop_toTopOf="@+id/button3" />
+
+        <TextView
+            android:id="@+id/textViewTypeF"
+            android:layout_width="110dp"
+            android:layout_height="38dp"
+            android:text="tipo"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/nombrefavoritos"
+            app:layout_constraintTop_toBottomOf="@+id/nombrefavoritos" />
+
+        <TextView
+            android:id="@+id/textViewFavoritos"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:text="Mis favoritos"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPhoneF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textViewPhoneF"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:text="numero"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEmailF" />
 
-    <!-- Vista de navegación lateral (Drawer) -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFavoritos"
+            android:layout_width="410dp"
+            android:layout_height="502dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPhoneF"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="NotSibling" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemTextColor="#ffffff"
+        app:itemIconTint="#ffffff"
+        app:itemIconSize="40dp"
+        android:background="#141832"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
+
 

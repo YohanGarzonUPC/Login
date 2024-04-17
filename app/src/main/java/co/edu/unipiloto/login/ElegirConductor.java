@@ -61,11 +61,12 @@ public class ElegirConductor extends AppCompatActivity {
                 asignarCarga(selectedConductor,id);
                 Intent intent = new Intent(ElegirConductor.this, Home.class);
                 startActivity(intent);
+
             }
         });
     }
     private void asignarCarga(String conductor, String idPublicacion) {
-        String URL = "http://192.168.0.15/rodo/asignarCargaConductor.php";
+        String URL = "http://192.168.56.1/rodo/asignarCargaConductor.php";
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL,
@@ -95,7 +96,7 @@ public class ElegirConductor extends AppCompatActivity {
     }
 
     private void obtenerConductores() {
-        String URL = "http://192.168.0.15/rodo/buscarConductor.php?jefe=" + jefe;
+        String URL = "http://192.168.56.1/rodo/buscarConductor.php?jefe=" + jefe;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL,

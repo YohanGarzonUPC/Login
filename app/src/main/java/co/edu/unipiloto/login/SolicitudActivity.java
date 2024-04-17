@@ -42,7 +42,7 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
     Button accederButton;
     RequestQueue requestQueue;
 
-    private static final String URL1="http://192.168.0.15/rodo/cargas.php";
+    private static final String URL1="http://192.168.56.1/rodo/cargas.php";
     private DrawerLayout drawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
