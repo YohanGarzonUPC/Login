@@ -175,7 +175,7 @@ public class EdicionPerfil extends AppCompatActivity {
     }
 
     private void enviarImagen(String encodedImage, String userEmail, String name, String direccion, String phone) {
-        String url = "http://192.168.56.1/rodo/update.php";
+        String url = "http://192.168.1.22/rodo/update.php";
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -217,7 +217,7 @@ public class EdicionPerfil extends AppCompatActivity {
     }
 
     private void enviarDatosUsuario(String userEmail, String name, String phone, String direccion) {
-        String url = "http://192.168.56.1/rodo/updatePerfil.php";
+        String url = "http://192.168.1.22/rodo/updatePerfil.php";
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 

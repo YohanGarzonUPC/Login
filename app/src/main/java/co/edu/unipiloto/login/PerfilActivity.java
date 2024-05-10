@@ -98,7 +98,17 @@ public class PerfilActivity extends AppCompatActivity {
         int itemId=item.getItemId();
         switch (itemId){
             case R.id.nav_Home:
-                startActivity(new Intent(this, Home.class));
+                UserManager userManager = UserManager.getInstance();
+                Intent intent;
+                String type = userManager.getType();
+                if (type.equalsIgnoreCase("Conductor")){
+                    intent = new Intent(this, MapsActivity.class);
+                } else if (type.equalsIgnoreCase("Propietario de Camión")) {
+                    intent = new Intent(this, Home.class);
+                }else{
+                    intent = new Intent(this, Home.class);
+                }
+                startActivity(intent);
                 return true;
             case R.id.nav_Favoritos:
                 startActivity(new Intent(this, FavoritosActivity.class));
@@ -124,7 +134,7 @@ public class PerfilActivity extends AppCompatActivity {
         UserManager userManager = UserManager.getInstance();
         String email = userManager.getEmail();
 
-        String url = "http://192.168.56.1/rodo/getPublicacionesEmail.php";
+        String url = "http://192.168.1.22/rodo/getPublicacionesEmail.php";
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 

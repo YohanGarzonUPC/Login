@@ -66,7 +66,7 @@ public class ElegirConductor extends AppCompatActivity {
         });
     }
     private void asignarCarga(String conductor, String idPublicacion) {
-        String URL = "http://192.168.56.1/rodo/asignarCargaConductor.php";
+        String URL = "http://192.168.1.22/rodo/asignarCargaConductor.php";
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL,
@@ -96,7 +96,7 @@ public class ElegirConductor extends AppCompatActivity {
     }
 
     private void obtenerConductores() {
-        String URL = "http://192.168.56.1/rodo/buscarConductor.php?jefe=" + jefe;
+        String URL = "http://192.168.1.22/rodo/buscarConductor.php?jefe=" + jefe;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL,

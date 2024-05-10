@@ -9,12 +9,13 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="411dp"
+        android:layout_width="wrap_content"
         android:layout_height="374dp"
         android:background="@drawable/rounded_bottom"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-2dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
 
     <LinearLayout
@@ -54,11 +55,11 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:autofillHints="" />
+            android:inputType="textEmailAddress" />
 
         <Space
             android:layout_width="match_parent"
@@ -98,11 +99,11 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="36dp"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:text="@string/noCuenta"
-            android:textColor="#8692f8"
-            android:clickable="true"
-            android:focusable="true" />
+            android:textColor="#8692f8" />
 
     </LinearLayout>
 
@@ -111,22 +112,23 @@
         android:layout_width="410dp"
         android:layout_height="260dp"
         android:layout_marginTop="52dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view"
         app:srcCompat="@drawable/logistics_rafiki"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        android:contentDescription="@string/todo" />
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="408dp"
         android:layout_height="52dp"
+        android:contentDescription="@string/todo2"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="@+id/view"
         app:layout_constraintVertical_bias="0.21"
         app:srcCompat="@drawable/logo__2_"
-        tools:layout_editor_absoluteX="1dp"
         tools:ignore="MissingConstraints"
-        android:contentDescription="@string/todo2" />
+        tools:layout_editor_absoluteX="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,14 @@
 package co.edu.unipiloto.login;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 public class SolicitudActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final int REQUEST_CODE_ORIGIN = 1;
+    private static final int REQUEST_CODE_DESTINATION = 2;
     EditText nameEditText;
     EditText origenEditText;
     EditText destinoEditText;
@@ -42,23 +46,45 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
     Button accederButton;
     RequestQueue requestQueue;
 
-    private static final String URL1="http://192.168.56.1/rodo/cargas.php";
+    private static final String URL1="http://192.168.1.22/rodo/cargas.php";
     private DrawerLayout drawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_solicitud);
+        setContentView(R.layout.activity_solicitud);  // Asegúrate de llamar setContentView una sola vez con el layout correcto
+        Log.d("SolicitudActivity", "onCreate iniciado");
 
-
-
-        drawerLayout=findViewById(R.id.drawer_layout_formulario);
+        // Inicializar las vistas
+        drawerLayout = findViewById(R.id.drawer_layout_formulario);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
-        
+        origenEditText = findViewById(R.id.originEditText);
+        destinoEditText = findViewById(R.id.destinationEditText);
+        nameEditText = findViewById(R.id.nameEditText);
+        pesoEditText = findViewById(R.id.weightEditText);
+        detallesEditText = findViewById(R.id.descriptionEditText);
+        accederButton = findViewById(R.id.submitButton);
         requestQueue = Volley.newRequestQueue(this);
 
-        InitUI();
+        if (origenEditText == null || destinoEditText == null) {
+            Log.e("SolicitudActivity", "Una o más entradas de EditText son nulas.");
+            return;
+        }
+
+        // Configuración de los listeners
+        origenEditText.setOnClickListener(v -> {
+            Intent intent = new Intent(SolicitudActivity.this, MapsActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_ORIGIN);
+        });
+
+        destinoEditText.setOnClickListener(v -> {
+            Intent intent = new Intent(SolicitudActivity.this, MapsActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_DESTINATION);
+        });
+
         accederButton.setOnClickListener(this);
+
+        Log.d("SolicitudActivity", "Listeners establecidos");
     }
 
     private void InitUI() {
@@ -78,13 +104,23 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
         int itemId=item.getItemId();
         switch (itemId){
             case R.id.nav_Home:
-                startActivity(new Intent(this, Home.class));
+                UserManager userManager = UserManager.getInstance();
+                Intent intent;
+                String type = userManager.getType();
+                if (type.equalsIgnoreCase("Conductor")){
+                    intent = new Intent(this, MapsActivity.class);
+                } else if (type.equalsIgnoreCase("Propietario de Camión")) {
+                    intent = new Intent(this, Home.class);
+                }else{
+                    intent = new Intent(this, Home.class);
+                }
+                startActivity(intent);
                 return true;
             case R.id.nav_Favoritos:
                 startActivity(new Intent(this, FavoritosActivity.class));
                 return true;
             case R.id.nav_formulario:
-                startActivity(new Intent(this,SolicitudActivity.class));
+                startActivity(new Intent(this, SolicitudActivity.class));
                 return true;
             case R.id.nav_perfil:
                 startActivity(new Intent(this, PerfilActivity.class));
@@ -174,4 +210,21 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
         };
         requestQueue.add(stringRequest);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            double latitude = data.getDoubleExtra("latitude", 0);
+            double longitude = data.getDoubleExtra("longitude", 0);
+            String location = latitude + ", " + longitude;
+
+            if (requestCode == REQUEST_CODE_ORIGIN) {
+                origenEditText.setText(location);
+            } else if (requestCode == REQUEST_CODE_DESTINATION) {
+                destinoEditText.setText(location);
+            }
+        }
+    }
+
 }

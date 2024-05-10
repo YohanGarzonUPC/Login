@@ -91,7 +91,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
             String password = passwordEditText.getText().toString().trim();
             if (validarCampos()) {
                 readUser(email,password);
-
             }
         } else if (id==R.id.textView2) {
             try {
@@ -104,7 +103,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void readUser(final String email, final String password) {
-        String URL = "http://192.168.56.1/rodo/buscar.php";
+        String URL = "http://192.168.1.22/rodo/buscar.php";
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL,
@@ -150,8 +149,15 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                         }
                                         userManager.setPublicaciones(publicationList);
                                     }
-
-                                    Intent intent = new Intent(AuthActivity.this, Home.class);
+                                    Intent intent;
+                                    type = userManager.getType();
+                                    if (type.equalsIgnoreCase("Conductor")){
+                                        intent = new Intent(AuthActivity.this, MapsActivity.class);
+                                    } else if (type.equalsIgnoreCase("Propietario de Camión")) {
+                                         intent = new Intent(AuthActivity.this, Home.class);
+                                    }else{
+                                        intent = new Intent(AuthActivity.this, Home.class);
+                                    }
                                     startActivity(intent);
                                     finish();
                                 } else {
