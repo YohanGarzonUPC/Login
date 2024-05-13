@@ -103,7 +103,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void readUser(final String email, final String password) {
-        String URL = "http://192.168.1.22/rodo/buscar.php";
+        String URL = "http://192.168.56.1/rodo/buscar.php";
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL,
@@ -152,7 +152,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                                     Intent intent;
                                     type = userManager.getType();
                                     if (type.equalsIgnoreCase("Conductor")){
-                                        intent = new Intent(AuthActivity.this, MapsActivity.class);
+                                        intent = new Intent(AuthActivity.this, CargasAsignadas.class);
                                     } else if (type.equalsIgnoreCase("Propietario de Camión")) {
                                          intent = new Intent(AuthActivity.this, Home.class);
                                     }else{

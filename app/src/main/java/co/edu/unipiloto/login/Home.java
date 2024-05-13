@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -71,6 +72,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
 
         progressBar = findViewById(R.id.pbCargando);
         userManager = UserManager.getInstance();
+
         obtenerPublicaciones();
 
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -93,8 +95,11 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
         });
     }
 
+
+
+
     private void obtenerPublicaciones() {
-        String URL = "http://192.168.1.22/rodo/traerPublicaciones.php";
+        String URL = "http://192.168.56.1/rodo/traerPublicaciones.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL,
@@ -151,7 +156,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
         Intent intent = new Intent(Home.this, ElegirConductor.class);
         int idPublicacion = publicacion.getIdPublicacion();
         intent.putExtra("clave", ""+idPublicacion);
-        String URL = "http://192.168.1.22/rodo/actualizarConductor.php";
+        String URL = "http://192.168.56.1/rodo/actualizarConductor.php";
         String email=userManager.getEmail();
         enviar(String.valueOf(idPublicacion), email, URL);
         startActivity(intent);
@@ -185,6 +190,10 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
         requestQueue.add(stringRequest);
     }
 
+
+
+
+
     private boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
@@ -193,7 +202,8 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
                 Intent intent;
                 String type = userManager.getType();
                 if (type.equalsIgnoreCase("Conductor")){
-                    intent = new Intent(this, MapsActivity.class);
+                    intent= new Intent(this,CargasAsignadas.class);
+
                 } else if (type.equalsIgnoreCase("Propietario de Camión")) {
                     intent = new Intent(this, Home.class);
                 }else{
@@ -215,7 +225,7 @@ public class Home extends AppCompatActivity implements AdapterPublicaciones.OnCo
         }
     }
     private void ActualizarHome() {
-        String URL = "http://192.168.1.22/rodo/actualizarHome.php";
+        String URL = "http://192.168.56.1/rodo/actualizarHome.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 URL,

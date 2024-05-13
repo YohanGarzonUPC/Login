@@ -134,7 +134,7 @@ public class PerfilActivity extends AppCompatActivity {
         UserManager userManager = UserManager.getInstance();
         String email = userManager.getEmail();
 
-        String url = "http://192.168.1.22/rodo/getPublicacionesEmail.php";
+        String url = "http://192.168.56.1/rodo/getPublicacionesEmail.php";
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
