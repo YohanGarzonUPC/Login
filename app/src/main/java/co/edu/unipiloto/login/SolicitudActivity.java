@@ -1,12 +1,20 @@
 package co.edu.unipiloto.login;
 
+
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -36,6 +44,8 @@ import java.util.Map;
 public class SolicitudActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_ORIGIN = 1;
     private static final int REQUEST_CODE_DESTINATION = 2;
+    private static final int REQUEST_NOTIFICATION_PERMISSION = 1;
+
     EditText nameEditText;
     EditText origenEditText;
     EditText destinoEditText;
@@ -46,12 +56,13 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
     Button accederButton;
     RequestQueue requestQueue;
 
-    private static final String URL1="http://192.168.1.22/rodo/cargas.php";
+    private static final String URL1="http://192.168.1.2/rodo/cargas.php";
     private DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_solicitud);  // Asegúrate de llamar setContentView una sola vez con el layout correcto
+        setContentView(R.layout.activity_solicitud);
         Log.d("SolicitudActivity", "onCreate iniciado");
 
         // Inicializar las vistas
@@ -65,6 +76,9 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
         detallesEditText = findViewById(R.id.descriptionEditText);
         accederButton = findViewById(R.id.submitButton);
         requestQueue = Volley.newRequestQueue(this);
+
+        UserManager userManager = UserManager.getInstance();
+        correo = userManager.getEmail();
 
         if (origenEditText == null || destinoEditText == null) {
             Log.e("SolicitudActivity", "Una o más entradas de EditText son nulas.");
@@ -83,21 +97,6 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
         });
 
         accederButton.setOnClickListener(this);
-
-        Log.d("SolicitudActivity", "Listeners establecidos");
-    }
-
-    private void InitUI() {
-        UserManager userManager = UserManager.getInstance();
-
-        nameEditText= findViewById(R.id.nameEditText);
-        origenEditText = findViewById(R.id.originEditText);
-        destinoEditText = findViewById(R.id.destinationEditText);
-        pesoEditText = findViewById(R.id.weightEditText);
-        detallesEditText = findViewById(R.id.descriptionEditText);
-        correo = userManager.getEmail();
-
-        accederButton = findViewById(R.id.submitButton);
     }
 
     private boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -131,8 +130,6 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
     }
 
     private boolean validarCampos() {
-
-
         String name = nameEditText.getText().toString().trim();
         String origen = origenEditText.getText().toString().trim();
         String destine = destinoEditText.getText().toString().trim();
@@ -161,6 +158,7 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -172,44 +170,53 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
             String peso = pesoEditText.getText().toString().trim();
             String detalle = detallesEditText.getText().toString().trim();
 
-
             if (validarCampos()) {
                 createApliccation(name,origen,destine,peso,detalle,correo);
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_NOTIFICATION_PERMISSION);
+                }
             }
         }
     }
 
-    private void createApliccation(final String name, final String origen, final String destine, final String peso, final String detalle,final String correo) {
+    private void createApliccation(final String name, final String origen, final String destine, final String peso, final String detalle, final String correo) {
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL1,
-                new Response.Listener<String>(){
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response){
-                        Toast.makeText(SolicitudActivity.this,"Correcto", Toast.LENGTH_SHORT).show();
+                    public void onResponse(String response) {
+                        Toast.makeText(SolicitudActivity.this, "Correcto", Toast.LENGTH_SHORT).show();
                     }
                 },
-                new Response.ErrorListener(){
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error){
-
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(SolicitudActivity.this, "Error: " + error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
-        ){
+        ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("name",name);
-                params.put("origen",origen);
-                params.put("destino",destine);
-                params.put("peso",peso);
-                params.put("detalles",detalle);
-                params.put("propietario",correo);
+                params.put("name", name);
+                params.put("origen", origen);
+                params.put("destino", destine);
+                params.put("peso", peso);
+                params.put("detalles", detalle);
+                params.put("propietario", correo);
                 return params;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
             }
         };
         requestQueue.add(stringRequest);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -227,4 +234,15 @@ public class SolicitudActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                // Manejar la denegación del permiso según sea necesario
+            }
+        }
+    }
 }

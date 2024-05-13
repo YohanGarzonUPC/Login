@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,7 +17,13 @@
         android:theme="@style/Theme.Login"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        
 
+        
+
+        <activity
+            android:name=".CargasAsignadas"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -30,7 +37,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDfByFnjZmSEF6UyodvyesCLF5ym7h1AQ8"/>
+            android:value="AIzaSyDrNsiKZYxt0xsoghwTrNaHRzs-ce4eXK4" />
 
         <activity
             android:name=".MapsActivity"
@@ -39,11 +46,7 @@
         <activity
             android:name=".ElegirConductor"
             android:exported="false" />
-        <activity
-            android:name=".elegirConductor"
-            android:exported="false"
-            android:label="@string/title_activity_elegir_conductor"
-            android:theme="@style/Theme.Login" />
+
         <activity
             android:name=".EdicionPerfil"
             android:exported="false" />
